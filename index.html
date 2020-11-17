@@ -1,0 +1,115 @@
+<!DOCTYPE html> 
+<html> 
+  
+<head> 
+    <title>Read Text File</title> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head> 
+  
+<body> 
+<label>Select a file : </label>
+    <input type="file" name="inputfile" id="inputfile"> 
+    <br> 
+  <label>Result :</label> 
+    <div id="output"></div> 
+      
+    <script type="text/javascript"> 
+	//var file="c:/bshdf.tex"
+   document.getElementById('inputfile').addEventListener('change', function() {   
+            var fr=new FileReader(); 
+			var map={};	
+            fr.onload=function(){ 
+               // document.getElementById('output').textContent=fr.result; 
+				//console.log(fr.result);
+				
+				var data=fr.result
+				
+				 var res = data.split(" ");
+				// console.log(res);
+				// document.getElementById('output').textContent=res;
+				 
+			
+			for(var word in res)
+			{
+			var text = res[word];
+			if(text.length==4)
+			{
+								var letters = /^[A-Za-z]+$/;
+								var flag=letters.test(text)
+								// console.log("flag>>>"+flag);
+								if(flag)
+								{
+								 if(text in map){
+									 map[text]=map[text]+1;
+									 
+									 }else{
+									 map[text]=1;
+									 }
+								}					
+								
+					 
+						
+					
+				}
+			
+			}	 
+			console.log("map>>>"+JSON.stringify(map));
+			var array=[];
+					for(a in map){
+					 array.push([a,map[a]])
+					}
+					array.sort(function(a,b){return a[1] - b[1]});
+					array.reverse();
+
+			console.log("array>>>"+JSON.stringify(array));
+			
+				$("#output").empty();
+			//var htmlContent;
+			var htmlContent='<table id="optionBtunId">';
+				htmlContent+=" <thead><th>word</th><th>Count</th> </thead>";
+				
+				htmlContent+="  <body>";
+				 
+			
+			for(var val=0;val<array.length;val++){
+			
+			//console.log("val>>>"+val);
+			//console.log("arrayval>>>"+array[val]);
+			
+			var finalarr=array[val];
+			 htmlContent+=" <tr>";
+					if(val<=10){	
+					for(var key=0; key<finalarr.length;key++){
+					
+					console.log(key);
+					console.log("optiontype[key]>>"+finalarr[key]);
+							
+						htmlContent+=" <td style='padding:10px;color: #0066a1; cursor: pointer;' title='"+finalarr[key]+"'  value='"+finalarr[key]+"' >"+finalarr[key]+"</td>";
+				
+					}
+					
+					}
+			
+			htmlContent+=" </tr>" 
+			
+			
+			}
+			
+				htmlContent+="  </body>";
+				htmlContent+=" </table>";
+			
+			$("#output").append(htmlContent);
+		
+						 
+            } 
+              
+            fr.readAsText(this.files[0]); 
+			
+			
+        }); 
+    </script> 
+	
+	
+</body> 
+  
+</html> 
